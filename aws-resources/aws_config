@@ -1,0 +1,15 @@
+[default]
+region=ap-southeast-1
+output=json
+
+[profile erx-questionnaire-dev]
+region=ap-southeast-1
+output=json
+
+[profile erx-questionnaire-uat]
+region=ap-southeast-1
+output=json
+
+[profile erx-questionnaire-prod-sg]
+region=ap-southeast-1
+output=json
