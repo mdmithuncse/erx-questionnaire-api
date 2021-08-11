@@ -3,16 +3,67 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31402.337
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8D5D059D-664A-4023-8092-86F196115275}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EEA547E8-8BD3-47FB-B1A8-17852B82A1F9}"
 	ProjectSection(SolutionItems) = preProject
 		Dockerfile = Dockerfile
 		Jenkinsfile = Jenkinsfile
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "aws-resources", "aws-resources", "{55C48A94-442F-463C-8DB9-C74B4DD814EC}"
+	ProjectSection(SolutionItems) = preProject
+		aws-resources\aws-cli.Dockerfile = aws-resources\aws-cli.Dockerfile
+		aws-resources\aws-windows-deployment-manifest.json = aws-resources\aws-windows-deployment-manifest.json
+		aws-resources\aws_config = aws-resources\aws_config
+		aws-resources\aws_credentials = aws-resources\aws_credentials
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{7702D330-D0BE-4B35-8A87-EF1B09670BDE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{D9A6985E-35AE-46C2-9EDB-B96325FDFB54}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{8CF36A9E-1CAD-48B3-9435-EEFE7F2E5916}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Erx.Questionnaire.Api", "Presentation\Erx.Questionnaire.Api\Erx.Questionnaire.Api.csproj", "{903AC9E2-0546-4DA7-9B6B-C34DF880A8CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "Infrastructure\Persistence\Persistence.csproj", "{2C674350-E412-47FD-8078-EB6D4F5DD02C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Core\Application\Application.csproj", "{01912770-C6BB-44B4-915C-A13157795B98}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Core\Domain\Domain.csproj", "{39FEDF6E-3EE9-4CC7-A869-881E4582899B}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{903AC9E2-0546-4DA7-9B6B-C34DF880A8CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{903AC9E2-0546-4DA7-9B6B-C34DF880A8CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{903AC9E2-0546-4DA7-9B6B-C34DF880A8CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{903AC9E2-0546-4DA7-9B6B-C34DF880A8CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C674350-E412-47FD-8078-EB6D4F5DD02C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C674350-E412-47FD-8078-EB6D4F5DD02C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C674350-E412-47FD-8078-EB6D4F5DD02C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C674350-E412-47FD-8078-EB6D4F5DD02C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01912770-C6BB-44B4-915C-A13157795B98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01912770-C6BB-44B4-915C-A13157795B98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01912770-C6BB-44B4-915C-A13157795B98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01912770-C6BB-44B4-915C-A13157795B98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39FEDF6E-3EE9-4CC7-A869-881E4582899B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39FEDF6E-3EE9-4CC7-A869-881E4582899B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39FEDF6E-3EE9-4CC7-A869-881E4582899B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39FEDF6E-3EE9-4CC7-A869-881E4582899B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{55C48A94-442F-463C-8DB9-C74B4DD814EC} = {EEA547E8-8BD3-47FB-B1A8-17852B82A1F9}
+		{903AC9E2-0546-4DA7-9B6B-C34DF880A8CE} = {8CF36A9E-1CAD-48B3-9435-EEFE7F2E5916}
+		{2C674350-E412-47FD-8078-EB6D4F5DD02C} = {D9A6985E-35AE-46C2-9EDB-B96325FDFB54}
+		{01912770-C6BB-44B4-915C-A13157795B98} = {7702D330-D0BE-4B35-8A87-EF1B09670BDE}
+		{39FEDF6E-3EE9-4CC7-A869-881E4582899B} = {7702D330-D0BE-4B35-8A87-EF1B09670BDE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D4BE5CBE-BA03-44FF-981E-4CA19624372F}
