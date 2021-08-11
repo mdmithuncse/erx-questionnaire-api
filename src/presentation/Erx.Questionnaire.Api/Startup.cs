@@ -30,7 +30,7 @@ namespace Erx.Questionnaire.Api
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Erx.Questionnaire.Api", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Erx Questionnaire Api", Version = "v1" });
             });
         }
 
@@ -41,7 +41,7 @@ namespace Erx.Questionnaire.Api
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Erx.Questionnaire.Api v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Erx Questionnaire Api v1"));
             }
 
             app.UseHttpsRedirection();
