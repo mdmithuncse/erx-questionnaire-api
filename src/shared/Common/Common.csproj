@@ -5,7 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\core\Domain\Domain.csproj" />
+    <Folder Include="Constants\" />
+    <Folder Include="Enums\" />
   </ItemGroup>
 
 </Project>
