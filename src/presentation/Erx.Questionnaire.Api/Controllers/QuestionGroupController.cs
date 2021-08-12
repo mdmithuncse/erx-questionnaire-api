@@ -1,6 +1,8 @@
 ﻿using Application.CQRS.Commands.QuestionGroupCommand;
 using Application.CQRS.Queries.QuestionGroupQuery;
+using Common.Constants;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -11,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace Erx.Questionnaire.Api.Controllers
 {
+    [Authorize(Constants.AuthorizePolicy.ADMIN_KEY)]
     [ApiController]
     public class QuestionGroupController : BaseController
     {

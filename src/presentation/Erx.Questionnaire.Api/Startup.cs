@@ -1,8 +1,14 @@
 using Application;
+using Common.Constants;
+using Erx.Questionnaire.Api.Filter;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,11 +37,62 @@ namespace Erx.Questionnaire.Api
         {
             services.AddApplication();
             services.AddPersistence(Configuration);
-
+            services.AddCors();
             services.AddControllers();
+
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<IAuthorizationHandler, BasicKeyAuthorizeHandler>();
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.Audience = "https://localhost:5001/";
+                options.Authority = "https://localhost:5000/";
+            });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(Constants.AuthorizePolicy.CLIENT_KEY,
+                                  policy =>
+                                  {
+                                      policy.Requirements.Add(new BasicKeyRequirement(Configuration["AuthKey:ClientKey"]));
+                                  });
+
+                options.AddPolicy(Constants.AuthorizePolicy.ADMIN_KEY,
+                                  policy =>
+                                  {
+                                      policy.Requirements.Add(new BasicKeyRequirement(Configuration["AuthKey:AdminKey"]));
+                                  });
+            });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Erx Questionnaire Api", Version = "v1" });
+                c.IgnoreObsoleteActions();
+                c.AddSecurityDefinition("Auth",
+                                        new OpenApiSecurityScheme
+                                        {
+                                            In = ParameterLocation.Header,
+                                            Description = "Please insert key/jwt with Bearer/Key into field",
+                                            Name = "Authorization",
+                                            Type = SecuritySchemeType.ApiKey
+                                        });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Auth" }
+                        },
+                        new string[]
+                        {
+                        }
+                    }
+                });
             });
         }
 
