@@ -1,6 +1,7 @@
 ﻿using Application;
 using Domain;
 using Microsoft.EntityFrameworkCore;
+using Persistence.Configurations;
 using System.Threading.Tasks;
 
 namespace Persistence
@@ -23,6 +24,8 @@ namespace Persistence
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+            QuestionGroupConfiguration.OnModelCreating(builder);
+            AnswerTypeConfiguration.OnModelCreating(builder);
         }
     }
 }
