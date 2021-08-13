@@ -8,6 +8,7 @@ namespace Application
     {
         DbSet<QuestionGroup> QuestionGroups { get; set; }
         DbSet<AnswerType> AnswerTypes { get; set; }
+        DbSet<Participant> Participants { get; set; }
 
         Task<long> SaveChangesAsync();
     }

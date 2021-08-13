@@ -15,6 +15,7 @@ namespace Persistence
 
         public DbSet<QuestionGroup> QuestionGroups { get; set; }
         public DbSet<AnswerType> AnswerTypes { get; set; }
+        public DbSet<Participant> Participants { get; set; }
 
         public async Task<long> SaveChangesAsync()
         {
@@ -26,6 +27,7 @@ namespace Persistence
             base.OnModelCreating(builder);
             QuestionGroupConfiguration.OnModelCreating(builder);
             AnswerTypeConfiguration.OnModelCreating(builder);
+            ParticipantConfiguration.OnModelCreating(builder);
         }
     }
 }
