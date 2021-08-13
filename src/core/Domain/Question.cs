@@ -23,6 +23,6 @@ namespace Domain
 
         public ICollection<Answer> Answers { get; set; }
 
-        public ParticipantAnswer UserAnswer { get; set; }
+        public ICollection<ParticipantAnswer> ParticipantAnswers { get; set; }
     }
 }

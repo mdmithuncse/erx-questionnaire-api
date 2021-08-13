@@ -7,7 +7,5 @@ namespace Domain
     public class AnswerType : BaseIdAsLong
     {
         public InputType Type { get; set; }
-
-        public ICollection<Question> Questions { get; set; }
     }
 }

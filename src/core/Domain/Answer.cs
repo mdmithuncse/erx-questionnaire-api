@@ -1,4 +1,5 @@
 ﻿using Domain.Base;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain
@@ -11,6 +12,6 @@ namespace Domain
 
         public string Result { get; set; }
 
-        public ParticipantAnswer UserAnswer { get; set; }
+        public ICollection<ParticipantAnswer> ParticipantAnswers { get; set; }
     }
 }
