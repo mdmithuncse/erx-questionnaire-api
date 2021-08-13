@@ -5,6 +5,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Threading.Tasks;
 
 namespace Erx.Questionnaire.Api.Controllers.Admin
@@ -26,6 +27,7 @@ namespace Erx.Questionnaire.Api.Controllers.Admin
         public async Task<IActionResult> GetAll()
         {
             var response = await _mediator.Send(new GetAllQuestionGroupQuery());
+            _logger.LogInformation($"End Point: { Request.Path.Value } executed successfully at { DateTime.UtcNow }");
 
             return Ok(response);
         }
@@ -39,6 +41,7 @@ namespace Erx.Questionnaire.Api.Controllers.Admin
             }
 
             var response = await _mediator.Send(new GetQuestionGroupByIdQuery { Id = id });
+            _logger.LogInformation($"End Point: { Request.Path.Value } executed successfully at { DateTime.UtcNow }");
 
             if (response == null)
                 return NotFound();
@@ -50,6 +53,7 @@ namespace Erx.Questionnaire.Api.Controllers.Admin
         public async Task<IActionResult> Create(CreateQuestionGroupCommand command)
         {
             var response = await _mediator.Send(command);
+            _logger.LogInformation($"End Point: { Request.Path.Value } executed successfully at { DateTime.UtcNow }");
 
             return Ok(response);
         }
@@ -63,6 +67,7 @@ namespace Erx.Questionnaire.Api.Controllers.Admin
             }
 
             var response = await _mediator.Send(command);
+            _logger.LogInformation($"End Point: { Request.Path.Value } executed successfully at { DateTime.UtcNow }");
 
             return Ok(response);
         }
@@ -76,6 +81,7 @@ namespace Erx.Questionnaire.Api.Controllers.Admin
             }
 
             var response = await _mediator.Send(new DeleteQuestionGroupByIdCommand { Id = id });
+            _logger.LogInformation($"End Point: { Request.Path.Value } executed successfully at { DateTime.UtcNow }");
 
             if (response <= 0)
                 return NotFound();

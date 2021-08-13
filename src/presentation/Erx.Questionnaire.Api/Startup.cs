@@ -39,6 +39,7 @@ namespace Erx.Questionnaire.Api
             services.AddPersistence(Configuration);
             services.AddCors();
             services.AddControllers();
+            services.AddApplicationInsightsTelemetry();
 
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
