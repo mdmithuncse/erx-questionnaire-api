@@ -11,11 +11,4 @@ namespace Common.Enums
         SingleLineText = 4,
         MultilineText = 5
     }
-
-    [JsonConverter(typeof(JsonStringEnumConverter))]
-    public enum AnswerDataSource
-    {
-        Text = 1,
-        Url = 2
-    }
 }

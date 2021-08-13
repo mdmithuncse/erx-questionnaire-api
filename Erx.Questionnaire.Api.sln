@@ -31,9 +31,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence", "src\infrastr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{66B402AD-4047-4C90-9277-4ED8D49CE526}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Extension", "src\shared\Extension\Extension.csproj", "{B01562C2-6088-42E5-9FA0-46DB421853AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Extension", "src\shared\Extension\Extension.csproj", "{B01562C2-6088-42E5-9FA0-46DB421853AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "src\core\Common\Common.csproj", "{A1CD3874-4485-4C17-965A-232167D3753B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "src\core\Common\Common.csproj", "{A1CD3874-4485-4C17-965A-232167D3753B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
