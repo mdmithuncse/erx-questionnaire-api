@@ -3,19 +3,15 @@ using Application.CQRS.Queries.AnswerTypeQuery;
 using Common.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace Erx.Questionnaire.Api.Controllers
+namespace Erx.Questionnaire.Api.Controllers.Admin
 {
-    [Authorize(Constants.AuthorizePolicy.CLIENT_KEY)]
+    [Authorize(Constants.AuthorizePolicy.ADMIN_KEY)]
     [ApiController]
-    public class AnswerTypeController : BaseController
+    public class AnswerTypeController : AdminBaseController
     {
         private readonly IMediator _mediator;
         private readonly ILogger<AnswerTypeController> _logger;

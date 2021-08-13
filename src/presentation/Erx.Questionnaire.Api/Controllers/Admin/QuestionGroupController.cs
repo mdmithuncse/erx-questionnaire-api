@@ -3,19 +3,15 @@ using Application.CQRS.Queries.QuestionGroupQuery;
 using Common.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace Erx.Questionnaire.Api.Controllers
+namespace Erx.Questionnaire.Api.Controllers.Admin
 {
     [Authorize(Constants.AuthorizePolicy.ADMIN_KEY)]
     [ApiController]
-    public class QuestionGroupController : BaseController
+    public class QuestionGroupController : AdminBaseController
     {
         private readonly IMediator _mediator;
         private readonly ILogger<QuestionGroupController> _logger;
