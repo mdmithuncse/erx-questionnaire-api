@@ -13,7 +13,7 @@ namespace Persistence.Configurations
             // Column types
             builder.Entity<Question>().Property(e => e.QuestionGroupId).IsRequired();
             builder.Entity<Question>().Property(e => e.Quiz).HasMaxLength(100).IsRequired();
-            builder.Entity<Question>().Property(e => e.AnswerTypeId).IsRequired().HasConversion<int>();
+            builder.Entity<Question>().Property(e => e.AnswerTypeId).IsRequired();
             builder.Entity<Question>().Property(e => e.AnswerSourceType).IsRequired().HasConversion<int>();
             builder.Entity<Question>().Property(e => e.AnswerDataSource).HasMaxLength(500);
         }
