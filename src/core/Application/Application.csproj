@@ -10,7 +10,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\shared\Extension\Extension.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="CQRS\Commands\ParticipantAnswerCommand\" />
+    <Folder Include="CQRS\Queries\ParticipantAnswerQuery\" />
   </ItemGroup>
 
 </Project>
