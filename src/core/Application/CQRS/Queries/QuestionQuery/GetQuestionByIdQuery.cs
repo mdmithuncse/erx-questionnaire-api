@@ -22,7 +22,7 @@ namespace Application.CQRS.Queries.QuestionQuery
 
             public async Task<Question> Handle(GetQuestionByIdQuery query, CancellationToken cancellationToken)
             {
-                var question = await _context.Questions.Where(x => x.Id == query.Id).FirstOrDefaultAsync();
+                var question = await _context.Questions.Include(x => x.QuestionGroup).Include(x => x.AnswerType).Include(x => x.Answers).Where(x => x.Id == query.Id).FirstOrDefaultAsync();
 
                 if (question == null)
                 {
