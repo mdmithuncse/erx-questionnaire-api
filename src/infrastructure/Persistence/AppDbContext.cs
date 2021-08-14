@@ -16,6 +16,7 @@ namespace Persistence
         public DbSet<Answer> Answers { get; set; }
         public DbSet<AnswerType> AnswerTypes { get; set; }
         public DbSet<Participant> Participants { get; set; }
+        public DbSet<ParticipantQuestion> ParticipantQuestions { get; set; }
         public DbSet<ParticipantAnswer> ParticipantAnswers { get; set; }
         public DbSet<Question> Questions { get; set; }
         public DbSet<QuestionGroup> QuestionGroups { get; set; }
@@ -31,6 +32,7 @@ namespace Persistence
             AnswerConfiguration.OnModelCreating(builder);
             AnswerTypeConfiguration.OnModelCreating(builder);
             ParticipantConfiguration.OnModelCreating(builder);
+            ParticipantQuestionConfiguration.OnModelCreating(builder);
             ParticipantAnswerConfiguration.OnModelCreating(builder);
             QuestionConfiguration.OnModelCreating(builder);
             QuestionGroupConfiguration.OnModelCreating(builder);
