@@ -21,14 +21,16 @@ namespace Application.CQRS.Commands.QuestionCommand
 
             public async Task<long> Handle(DeleteQuestionByIdCommand command, CancellationToken cancellationToken)
             {
-                var question = await _context.Questions.Where(x => x.Id == command.Id).FirstOrDefaultAsync();
+                var question = await _context.Questions.Include(x => x.Answers).Where(x => x.Id == command.Id).FirstOrDefaultAsync();
 
                 if (question == null)
                 {
                     return default;
                 }
 
+                _context.Answers.RemoveRange(question.Answers);
                 _context.Questions.Remove(question);
+                
                 await _context.SaveChangesAsync();
 
                 return question.Id;
