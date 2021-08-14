@@ -33,6 +33,7 @@ namespace Erx.Questionnaire.Api
             services.AddCors();
             services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
             services.AddApplicationInsightsTelemetry();
+            services.AddHttpClient();
 
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
