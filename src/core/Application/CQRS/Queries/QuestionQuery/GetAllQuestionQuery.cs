@@ -21,7 +21,7 @@ namespace Application.CQRS.Queries.QuestionQuery
 
             public async Task<IEnumerable<Question>> Handle(GetAllQuestionQuery query, CancellationToken cancellationToken)
             {
-                var questionList = await _context.Questions.Include(x => x.QuestionGroup).Include(x => x.AnswerType).Include(x => x.Answers).ToListAsync();
+                var questionList = await _context.Questions.Include(x => x.QuestionGroup).Include(x => x.AnswerType).ToListAsync();
 
                 if (questionList == null || !questionList.Any())
                 {
