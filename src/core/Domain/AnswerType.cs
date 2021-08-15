@@ -1,6 +1,5 @@
 ﻿using Common.Enums;
 using Domain.Base;
-using System.Collections.Generic;
 
 namespace Domain
 {

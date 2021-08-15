@@ -1,35 +1,39 @@
-﻿using Domain;
+﻿using AutoMapper;
+using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Model;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Application.CQRS.Queries.AnswerTypeQuery
 {
-    public class GetAnswerTypeByIdQuery : IRequest<AnswerType>
+    public class GetAnswerTypeByIdQuery : IRequest<AnswerTypeResponse>
     {
         public long Id { get; set; }
 
-        public class GetAnswerTypeByIdQueryHandler : IRequestHandler<GetAnswerTypeByIdQuery, AnswerType>
+        public class GetAnswerTypeByIdQueryHandler : IRequestHandler<GetAnswerTypeByIdQuery, AnswerTypeResponse>
         {
             private readonly IAppDbContext _context;
+            private readonly IMapper _mapper;
 
-            public GetAnswerTypeByIdQueryHandler(IAppDbContext context)
+            public GetAnswerTypeByIdQueryHandler(IAppDbContext context, IMapper mapper)
             {
                 _context = context;
+                _mapper = mapper;
             }
 
-            public async Task<AnswerType> Handle(GetAnswerTypeByIdQuery query, CancellationToken cancellationToken)
+            public async Task<AnswerTypeResponse> Handle(GetAnswerTypeByIdQuery query, CancellationToken cancellationToken)
             {
-                var answerType = await _context.AnswerTypes.Where(x => x.Id == query.Id).FirstOrDefaultAsync();
+                var item = await _context.AnswerTypes.Where(x => x.Id == query.Id).FirstOrDefaultAsync();
 
-                if (answerType == null)
+                if (item == null)
                 {
                     return default;
                 }
 
-                return answerType;
+                return _mapper.Map<AnswerTypeResponse>(item);
             }
         }
     }

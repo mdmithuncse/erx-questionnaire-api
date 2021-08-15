@@ -31,7 +31,7 @@ namespace Application.CQRS.Queries.QuestionGroupQuery
                     return default;
                 }
 
-                return _mapper.Map<IEnumerable<QuestionGroupResponse>>(items);
+                return _mapper.Map<IEnumerable<QuestionGroupResponse>>(items.AsReadOnly());
             }
         }
     }
