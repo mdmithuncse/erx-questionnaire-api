@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Common.Enums;
 using Domain;
 using Model.Base;
 using Model.Mapping;
