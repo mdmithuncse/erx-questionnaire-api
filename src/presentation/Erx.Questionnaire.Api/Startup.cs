@@ -1,4 +1,5 @@
 using Application;
+using AutoMapper.EquivalencyExpression;
 using Common.Constants;
 using Erx.Questionnaire.Api.Filter;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -11,11 +12,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Model.Mapping;
 using Newtonsoft.Json;
 using Persistence;
 using Service;
 using Service.Models;
 using System;
+using System.Reflection;
 
 namespace Erx.Questionnaire.Api
 {
@@ -36,6 +39,7 @@ namespace Erx.Questionnaire.Api
             services.AddCors();
             services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
             services.AddApplicationInsightsTelemetry();
+            
             services.AddHttpClient<ICountryService, CountryService>(client =>
             {
                 client.BaseAddress = new Uri(Configuration["CountryOptions:BaseUrl"]);
@@ -66,6 +70,12 @@ namespace Erx.Questionnaire.Api
                                       policy.Requirements.Add(new BasicKeyRequirement(Configuration["AuthKey:AdminKey"]));
                                   });
             });
+
+            services.AddAutoMapper(options =>
+            {
+                options.AddCollectionMappers();
+                options.AddProfile<MappingProfile>();
+            }, Assembly.GetExecutingAssembly());
 
             services.AddSwaggerGen(c =>
             {

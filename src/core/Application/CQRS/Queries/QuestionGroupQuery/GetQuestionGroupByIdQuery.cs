@@ -1,35 +1,39 @@
-﻿using Domain;
+﻿using AutoMapper;
+using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Model;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Application.CQRS.Queries.QuestionGroupQuery
 {
-    public class GetQuestionGroupByIdQuery : IRequest<QuestionGroup>
+    public class GetQuestionGroupByIdQuery : IRequest<QuestionGroupResponse>
     {
         public long Id { get; set; }
 
-        public class GetQuestionGroupByIdQueryHandler: IRequestHandler<GetQuestionGroupByIdQuery, QuestionGroup>
+        public class GetQuestionGroupByIdQueryHandler: IRequestHandler<GetQuestionGroupByIdQuery, QuestionGroupResponse>
         {
             private readonly IAppDbContext _context;
+            private readonly IMapper _mapper;
 
-            public GetQuestionGroupByIdQueryHandler(IAppDbContext context)
+            public GetQuestionGroupByIdQueryHandler(IAppDbContext context, IMapper mapper)
             {
                 _context = context;
+                _mapper = mapper;
             }
 
-            public async Task<QuestionGroup> Handle(GetQuestionGroupByIdQuery query, CancellationToken cancellationToken)
+            public async Task<QuestionGroupResponse> Handle(GetQuestionGroupByIdQuery query, CancellationToken cancellationToken)
             {
-                var questionGroup = await _context.QuestionGroups.Where(x => x.Id == query.Id).FirstOrDefaultAsync();
+                var item = await _context.QuestionGroups.Where(x => x.Id == query.Id).FirstOrDefaultAsync();
 
-                if (questionGroup == null)
+                if (item == null)
                 {
                     return default;
                 }
 
-                return questionGroup;
+                return _mapper.Map<QuestionGroupResponse>(item);
             }
         }
     }

@@ -1,6 +1,7 @@
-﻿using Domain;
+﻿using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Model;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -8,27 +9,29 @@ using System.Threading.Tasks;
 
 namespace Application.CQRS.Queries.QuestionGroupQuery
 {
-    public class GetAllQuestionGroupQuery : IRequest<IEnumerable<QuestionGroup>>
+    public class GetAllQuestionGroupQuery : IRequest<IEnumerable<QuestionGroupResponse>>
     {
-        public class GetAllQuestionGroupQueryHandler : IRequestHandler<GetAllQuestionGroupQuery, IEnumerable<QuestionGroup>>
+        public class GetAllQuestionGroupQueryHandler : IRequestHandler<GetAllQuestionGroupQuery, IEnumerable<QuestionGroupResponse>>
         {
             private readonly IAppDbContext _context;
+            private readonly IMapper _mapper;
 
-            public GetAllQuestionGroupQueryHandler(IAppDbContext context)
+            public GetAllQuestionGroupQueryHandler(IAppDbContext context, IMapper mapper)
             {
                 _context = context;
+                _mapper = mapper;
             }
 
-            public async Task<IEnumerable<QuestionGroup>> Handle(GetAllQuestionGroupQuery query, CancellationToken cancellationToken)
+            public async Task<IEnumerable<QuestionGroupResponse>> Handle(GetAllQuestionGroupQuery query, CancellationToken cancellationToken)
             {
-                var questionGroupList = await _context.QuestionGroups.ToListAsync();
+                var items = await _context.QuestionGroups.ToListAsync();
 
-                if (questionGroupList == null || !questionGroupList.Any())
+                if (items == null || !items.Any())
                 {
                     return default;
                 }
 
-                return questionGroupList.AsReadOnly();
+                return _mapper.Map<IEnumerable<QuestionGroupResponse>>(items);
             }
         }
     }
