@@ -12,7 +12,7 @@ namespace Erx.Questionnaire.Api.Controllers.Client
 {
     [Authorize(Constants.AuthorizePolicy.CLIENT_KEY)]
     [ApiController]
-    public class ParticipantAnswerController : ControllerBase
+    public class ParticipantAnswerController : ClientBaseController
     {
         private readonly IMediator _mediator;
         private readonly ILogger<ParticipantAnswerController> _logger;

@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Service;
 using Service.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -72,7 +73,7 @@ namespace Application.CQRS.Queries.QuestionQuery
                 {
                     var question = questions.FirstOrDefault();
 
-                    if (question.AnswerSourceType == AnswerSourceType.Url && question.Quiz.Contains("Country"))
+                    if (question.AnswerSourceType == AnswerSourceType.Url && question.Quiz.Contains("Country", StringComparison.InvariantCultureIgnoreCase))
                     {
                         var countries = await _service.GetCountriesAsync();
 
@@ -95,7 +96,7 @@ namespace Application.CQRS.Queries.QuestionQuery
                 {
                     var question = unAssignedQuestions.FirstOrDefault();
 
-                    if (question.AnswerSourceType == AnswerSourceType.Url && question.Quiz.Contains("Country"))
+                    if (question.AnswerSourceType == AnswerSourceType.Url && question.Quiz.Contains("Country", StringComparison.InvariantCultureIgnoreCase))
                     {
                         var countries = await _service.GetCountriesAsync();
 
