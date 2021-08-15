@@ -1,7 +1,9 @@
-﻿using Common.Enums;
+﻿using AutoMapper;
+using Common.Enums;
 using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Model;
 using Service;
 using Service.Models;
 using System;
@@ -12,18 +14,20 @@ using System.Threading.Tasks;
 
 namespace Application.CQRS.Queries.QuestionQuery
 {
-    public class GetParticipantQuestionQuery : IRequest<Question>
+    public class GetParticipantQuestionQuery : IRequest<QuestionResponse>
     {
         public long ParticipantId { get; set; }
 
-        public class GetParticipantQuestionQueryHandler : IRequestHandler<GetParticipantQuestionQuery, Question>
+        public class GetParticipantQuestionQueryHandler : IRequestHandler<GetParticipantQuestionQuery, QuestionResponse>
         {
             private readonly IAppDbContext _context;
+            private readonly IMapper _mapper;
             private readonly ICountryService _service;
 
-            public GetParticipantQuestionQueryHandler(IAppDbContext context, ICountryService service)
+            public GetParticipantQuestionQueryHandler(IAppDbContext context, IMapper mapper, ICountryService service)
             {
                 _context = context;
+                _mapper = mapper;
                 _service = service;
             }
 
@@ -64,7 +68,7 @@ namespace Application.CQRS.Queries.QuestionQuery
                 return await _context.SaveChangesAsync();
             }
 
-            public async Task<Question> Handle(GetParticipantQuestionQuery query, CancellationToken cancellationToken)
+            public async Task<QuestionResponse> Handle(GetParticipantQuestionQuery query, CancellationToken cancellationToken)
             {
                 var participantQuestions = await _context.ParticipantQuestions.Where(x => x.ParticipantId == query.ParticipantId).ToListAsync();
                 var questions = await _context.Questions.Include(x => x.QuestionGroup).Include(x => x.AnswerType).Include(x => x.Answers).ToListAsync();
@@ -87,7 +91,7 @@ namespace Application.CQRS.Queries.QuestionQuery
 
                     await SaveParticipantQuestionAsync(question.Id, query.ParticipantId);
 
-                    return question;
+                    return _mapper.Map<QuestionResponse>(question);
                 }
 
                 var unAssignedQuestions = questions.Where(x => !participantQuestions.Any(c => c.QuestionId == x.Id));
@@ -110,7 +114,7 @@ namespace Application.CQRS.Queries.QuestionQuery
 
                     await SaveParticipantQuestionAsync(question.Id, query.ParticipantId);
 
-                    return question;
+                    return _mapper.Map<QuestionResponse>(question);
                 }
 
                 return default;

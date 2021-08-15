@@ -1,6 +1,7 @@
-﻿using Domain;
+﻿using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Model;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -8,29 +9,31 @@ using System.Threading.Tasks;
 
 namespace Application.CQRS.Queries.ParticipantAnswerQuery
 {
-    public class GetParticipantAnswerByParticipantIdQuery : IRequest<IEnumerable<ParticipantAnswer>>
+    public class GetParticipantAnswerByParticipantIdQuery : IRequest<IEnumerable<ParticipantAnswerResponse>>
     {
         public long ParticipantId { get; set; }
 
-        public class GetParticipantAnswerByParticipantIdQueryHandler : IRequestHandler<GetParticipantAnswerByParticipantIdQuery, IEnumerable<ParticipantAnswer>>
+        public class GetParticipantAnswerByParticipantIdQueryHandler : IRequestHandler<GetParticipantAnswerByParticipantIdQuery, IEnumerable<ParticipantAnswerResponse>>
         {
-            public IAppDbContext _context;
+            private readonly IAppDbContext _context;
+            private readonly IMapper _mapper;
 
-            public GetParticipantAnswerByParticipantIdQueryHandler(IAppDbContext context)
+            public GetParticipantAnswerByParticipantIdQueryHandler(IAppDbContext context, IMapper mapper)
             {
                 _context = context;
+                _mapper = mapper;
             }
 
-            public async Task<IEnumerable<ParticipantAnswer>> Handle(GetParticipantAnswerByParticipantIdQuery query, CancellationToken cancellationToken)
+            public async Task<IEnumerable<ParticipantAnswerResponse>> Handle(GetParticipantAnswerByParticipantIdQuery query, CancellationToken cancellationToken)
             {
-                var participantAnswerList = await _context.ParticipantAnswers.Where(x => x.ParticipantId == query.ParticipantId).ToListAsync();
+                var items = await _context.ParticipantAnswers.Where(x => x.ParticipantId == query.ParticipantId).ToListAsync();
 
-                if (participantAnswerList == null || !participantAnswerList.Any())
+                if (items == null || !items.Any())
                 {
                     return default;
                 }
 
-                return participantAnswerList.AsReadOnly();
+                return _mapper.Map<IEnumerable<ParticipantAnswerResponse>>(items);
             }
         }
     }
