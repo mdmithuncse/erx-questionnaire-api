@@ -1,10 +1,11 @@
 ﻿using Common.Enums;
 using Domain;
-using Extension;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Service;
+using Service.Models;
+using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,12 +18,49 @@ namespace Application.CQRS.Queries.QuestionQuery
         public class GetParticipantQuestionQueryHandler : IRequestHandler<GetParticipantQuestionQuery, Question>
         {
             private readonly IAppDbContext _context;
-            private readonly HttpClient _client;
+            private readonly ICountryService _service;
 
-            public GetParticipantQuestionQueryHandler(IAppDbContext context, HttpClient client)
+            public GetParticipantQuestionQueryHandler(IAppDbContext context, ICountryService service)
             {
                 _context = context;
-                _client = client;
+                _service = service;
+            }
+
+            private static IList<Answer> BuildAnswers(IEnumerable<CountryResponse> inputs)
+            {
+                if (!inputs.Any())
+                {
+                    return default;
+                }
+
+                var answers = new List<Answer>();
+
+                foreach (var input in inputs)
+                {
+                    answers.Add(new Answer
+                    {
+                        Result = input.Name
+                    });
+                }
+
+                return answers;
+            }
+
+            private async Task<long> SaveParticipantQuestionAsync(long questionId, long participantId)
+            {
+                if (questionId <= 0 || participantId <= 0)
+                {
+                    return default;
+                }
+
+                var participantQuestion = new ParticipantQuestion
+                {
+                    QuestionId = questionId,
+                    ParticipantId = participantId
+                };
+
+                _context.ParticipantQuestions.Add(participantQuestion);
+                return await _context.SaveChangesAsync();
             }
 
             public async Task<Question> Handle(GetParticipantQuestionQuery query, CancellationToken cancellationToken)
@@ -34,24 +72,19 @@ namespace Application.CQRS.Queries.QuestionQuery
                 {
                     var question = questions.FirstOrDefault();
 
-                    if (question.AnswerSourceType == AnswerSourceType.Url)
+                    if (question.AnswerSourceType == AnswerSourceType.Url && question.Quiz.Contains("Country"))
                     {
-                        var response = await _client.GetAsync("https://restcountries.eu/rest/v2/all");
+                        var countries = await _service.GetCountriesAsync();
 
-                        if (response.IsSuccessStatusCode)
+                        if (countries.Any())
                         {
-                            var answers = await response.Deserialize<Answer>();
+                            var answers = BuildAnswers(countries);
+
+                            question.Answers = answers;
                         }
                     }
 
-                    var participantQuestion = new ParticipantQuestion
-                    {
-                        QuestionId = question.Id,
-                        ParticipantId = query.ParticipantId
-                    };
-
-                    _context.ParticipantQuestions.Add(participantQuestion);
-                    await _context.SaveChangesAsync();
+                    await SaveParticipantQuestionAsync(question.Id, query.ParticipantId);
 
                     return question;
                 }
@@ -62,24 +95,19 @@ namespace Application.CQRS.Queries.QuestionQuery
                 {
                     var question = unAssignedQuestions.FirstOrDefault();
 
-                    if (question.AnswerSourceType == AnswerSourceType.Url)
+                    if (question.AnswerSourceType == AnswerSourceType.Url && question.Quiz.Contains("Country"))
                     {
-                        var response = await _client.GetAsync("https://restcountries.eu/rest/v2/all");
+                        var countries = await _service.GetCountriesAsync();
 
-                        if (response.IsSuccessStatusCode)
+                        if (countries.Any())
                         {
-                            var answers = await response.Deserialize<Answer>();
+                            var answers = BuildAnswers(countries);
+
+                            question.Answers = answers;
                         }
                     }
 
-                    var participantQuestion = new ParticipantQuestion
-                    {
-                        QuestionId = question.Id,
-                        ParticipantId = query.ParticipantId
-                    };
-
-                    _context.ParticipantQuestions.Add(participantQuestion);
-                    await _context.SaveChangesAsync();
+                    await SaveParticipantQuestionAsync(question.Id, query.ParticipantId);
 
                     return question;
                 }

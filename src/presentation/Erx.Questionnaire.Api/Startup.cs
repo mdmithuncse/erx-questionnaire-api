@@ -13,6 +13,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Persistence;
+using Service;
+using Service.Models;
+using System;
 
 namespace Erx.Questionnaire.Api
 {
@@ -33,11 +36,11 @@ namespace Erx.Questionnaire.Api
             services.AddCors();
             services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
             services.AddApplicationInsightsTelemetry();
-            services.AddHttpClient();
-
-            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddSingleton<IAuthorizationHandler, BasicKeyAuthorizeHandler>();
+            services.AddHttpClient<ICountryService, CountryService>(client =>
+            {
+                client.BaseAddress = new Uri(Configuration["CountryOptions:BaseUrl"]);
+                client.DefaultRequestHeaders.Add("Accept", "application/json");
+            });
 
             services.AddAuthentication(options =>
             {
@@ -90,6 +93,14 @@ namespace Erx.Questionnaire.Api
                     }
                 });
             });
+
+            services.Configure<CountryOptions>(Configuration.GetSection(nameof(CountryOptions)));
+
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<IAuthorizationHandler, BasicKeyAuthorizeHandler>();
+
+            services.AddScoped<ICountryService, CountryService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
