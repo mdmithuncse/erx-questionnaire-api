@@ -7,3 +7,4 @@ namespace Service.Models
         public string Name { get; set; }
     }
 }
+
