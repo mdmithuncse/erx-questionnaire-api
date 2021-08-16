@@ -4,6 +4,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.31402.337
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C36BA702-E69C-49DD-AFA9-550FCECDDB67}"
+	ProjectSection(SolutionItems) = preProject
+		Dockerfile = Dockerfile
+		Jenkinsfile = Jenkinsfile
+		README.md = README.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "aws-resources", "aws-resources", "{A272514D-6E05-4D62-B2F1-0E36E790581D}"
 	ProjectSection(SolutionItems) = preProject
@@ -41,9 +46,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "src\core\Model\Mod
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{29F732BA-4258-45F0-A32A-2384AFB181FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Erx.Questionnaire.Application.Test", "test\Erx.Questionnaire.Application.Test\Erx.Questionnaire.Application.Test.csproj", "{36B94EA4-24BE-4376-B740-0E10DD717923}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Erx.Questionnaire.Application.Test", "test\Erx.Questionnaire.Application.Test\Erx.Questionnaire.Application.Test.csproj", "{36B94EA4-24BE-4376-B740-0E10DD717923}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Erx.Questionnaire.Api.Test", "test\Erx.Questionnaire.Api.Test\Erx.Questionnaire.Api.Test.csproj", "{2C2F530C-0427-441F-8F07-68E65DFE4E3B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Erx.Questionnaire.Api.Test", "test\Erx.Questionnaire.Api.Test\Erx.Questionnaire.Api.Test.csproj", "{2C2F530C-0427-441F-8F07-68E65DFE4E3B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
