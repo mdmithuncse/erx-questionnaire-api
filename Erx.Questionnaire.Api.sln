@@ -50,7 +50,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pagination", "src\shared\Pa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service", "src\shared\Service\Service.csproj", "{BA00F4EF-DF8C-4131-920C-B420FC2B3646}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "src\core\Model\Model.csproj", "{3F45687F-1DE1-43D6-9E07-EFB1350CC446}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "src\core\Model\Model.csproj", "{3F45687F-1DE1-43D6-9E07-EFB1350CC446}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -24,10 +24,18 @@ namespace Erx.Questionnaire.Api.Controllers.Client
         }
 
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(int page, int pageSize)
         {
-            var response = await _mediator.Send(new GetAllParticipantQuery());
+            if (page < 0 || pageSize <= 0)
+            {
+                return BadRequest();
+            }
+
+            var response = await _mediator.Send(new GetAllParticipantQuery { Page = page, PageSize = pageSize });
             _logger.LogInformation($"End Point: { Request.Path.Value } executed successfully at { DateTime.UtcNow }");
+
+            if (response == null)
+                return NotFound();
 
             return Ok(response);
         }

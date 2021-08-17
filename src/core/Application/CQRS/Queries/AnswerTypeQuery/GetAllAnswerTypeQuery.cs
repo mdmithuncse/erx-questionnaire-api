@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Model;
+using Pagination;
+using Pagination.Model;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -9,29 +10,50 @@ using System.Threading.Tasks;
 
 namespace Application.CQRS.Queries.AnswerTypeQuery
 {
-    public class GetAllAnswerTypeQuery : IRequest<IEnumerable<AnswerTypeResponse>>
+    public class GetAllAnswerTypeQuery : IRequest<PagedResult<AnswerTypeResponse>>
     {
-        public class GetAllAnswerTypeQueryHandler : IRequestHandler<GetAllAnswerTypeQuery, IEnumerable<AnswerTypeResponse>>
+        public int Page { get; set; }
+        public int PageSize { get; set; }
+
+        public class GetAllAnswerTypeQueryHandler : IRequestHandler<GetAllAnswerTypeQuery, PagedResult<AnswerTypeResponse>>
         {
             private readonly IAppDbContext _context;
-            private readonly IMapper _mapper;
 
-            public GetAllAnswerTypeQueryHandler(IAppDbContext context, IMapper mapper)
+            public GetAllAnswerTypeQueryHandler(IAppDbContext context)
             {
                 _context = context;
-                _mapper = mapper;
             }
 
-            public async Task<IEnumerable<AnswerTypeResponse>> Handle(GetAllAnswerTypeQuery query, CancellationToken cancellationToken)
+            public async Task<PagedResult<AnswerTypeResponse>> Handle(GetAllAnswerTypeQuery query, CancellationToken cancellationToken)
             {
-                var items = await _context.AnswerTypes.ToListAsync();
+                var result = await _context.AnswerTypes.GetPagedItemsAsync(query.Page, query.PageSize);
 
-                if (items == null || !items.Any())
+                if (result == null || !result.Items.Any())
                 {
                     return default;
                 }
 
-                return _mapper.Map<IEnumerable<AnswerTypeResponse>>(items.AsReadOnly());
+                var items = new List<AnswerTypeResponse>();
+                
+                if (result.Items.Any())
+                {
+                    result.Items.ToList().ForEach(x => items.Add(new AnswerTypeResponse 
+                    { 
+                        Id = x.Id,
+                        Created = x.Created,
+                        Updated = x.Updated,
+                        Type = x.Type
+                    })); 
+                }
+
+                return new PagedResult<AnswerTypeResponse>
+                {
+                    CurrentPage = result.CurrentPage,
+                    PageSize = result.PageSize,
+                    PageCount = result.PageCount,
+                    RowCount = result.RowCount,
+                    Items = items
+                };
             }
         }
     }

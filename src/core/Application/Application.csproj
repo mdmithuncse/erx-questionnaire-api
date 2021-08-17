@@ -6,11 +6,10 @@
 
   <ItemGroup>
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.9" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\shared\Extension\Extension.csproj" />
+    <ProjectReference Include="..\..\shared\Pagination\Pagination.csproj" />
     <ProjectReference Include="..\..\shared\Service\Service.csproj" />
     <ProjectReference Include="..\Model\Model.csproj" />
   </ItemGroup>

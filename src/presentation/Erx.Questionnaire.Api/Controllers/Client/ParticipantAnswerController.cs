@@ -24,23 +24,14 @@ namespace Erx.Questionnaire.Api.Controllers.Client
         }
 
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(int page, int pageSize)
         {
-            var response = await _mediator.Send(new GetAllParticipantAnswerQuery());
-            _logger.LogInformation($"End Point: { Request.Path.Value } executed successfully at { DateTime.UtcNow }");
-
-            return Ok(response);
-        }
-
-        [HttpGet("[action]")]
-        public async Task<IActionResult> GetByParticipantId(int participantId)
-        {
-            if (participantId <= 0)
+            if (page < 0 || pageSize <= 0)
             {
                 return BadRequest();
             }
 
-            var response = await _mediator.Send(new GetParticipantAnswerByParticipantIdQuery { ParticipantId = participantId });
+            var response = await _mediator.Send(new GetAllParticipantAnswerQuery { Page = page, PageSize = pageSize });
             _logger.LogInformation($"End Point: { Request.Path.Value } executed successfully at { DateTime.UtcNow }");
 
             if (response == null)
@@ -50,14 +41,31 @@ namespace Erx.Questionnaire.Api.Controllers.Client
         }
 
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetByQuestionId(int questionId)
+        public async Task<IActionResult> GetByParticipantId(int page, int pageSize, int participantId)
         {
-            if (questionId <= 0)
+            if (page < 0 || pageSize <= 0 || participantId <= 0)
             {
                 return BadRequest();
             }
 
-            var response = await _mediator.Send(new GetParticipantAnswerByQuestionIdQuery { QuestionId = questionId });
+            var response = await _mediator.Send(new GetParticipantAnswerByParticipantIdQuery { Page = page, PageSize = pageSize, ParticipantId = participantId });
+            _logger.LogInformation($"End Point: { Request.Path.Value } executed successfully at { DateTime.UtcNow }");
+
+            if (response == null)
+                return NotFound();
+
+            return Ok(response);
+        }
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetByQuestionId(int page, int pageSize, int questionId)
+        {
+            if (page < 0 || pageSize <= 0 || questionId <= 0)
+            {
+                return BadRequest();
+            }
+
+            var response = await _mediator.Send(new GetParticipantAnswerByQuestionIdQuery { Page = page, PageSize = pageSize, QuestionId = questionId });
             _logger.LogInformation($"End Point: { Request.Path.Value } executed successfully at { DateTime.UtcNow }");
 
             if (response == null)
