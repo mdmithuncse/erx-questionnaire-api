@@ -19,10 +19,12 @@ namespace Application.CQRS.Queries.ParticipantQuery
         public class GetAllParticipantQueryHandler : IRequestHandler<GetAllParticipantQuery, PagedResult<ParticipantResponse>>
         {
             private readonly IAppDbContext _context;
+            private readonly IMapper _mapper;
 
-            public GetAllParticipantQueryHandler(IAppDbContext context)
+            public GetAllParticipantQueryHandler(IAppDbContext context, IMapper mapper)
             {
                 _context = context;
+                _mapper = mapper;
             }
 
             public async Task<PagedResult<ParticipantResponse>> Handle(GetAllParticipantQuery query, CancellationToken cancellationToken)
@@ -34,19 +36,19 @@ namespace Application.CQRS.Queries.ParticipantQuery
                     return default;
                 }
 
-                var items = new List<ParticipantResponse>();
+                //var items = new List<ParticipantResponse>();
 
-                if (result.Items.Any())
-                {
-                    result.Items.ToList().ForEach(x => items.Add(new ParticipantResponse
-                    {
-                        Id = x.Id,
-                        Created = x.Created,
-                        Updated = x.Updated,
-                        Name = x.Name,
-                        Email = x.Email
-                    }));
-                }
+                //if (result.Items.Any())
+                //{
+                //    result.Items.ToList().ForEach(x => items.Add(new ParticipantResponse
+                //    {
+                //        Id = x.Id,
+                //        Created = x.Created,
+                //        Updated = x.Updated,
+                //        Name = x.Name,
+                //        Email = x.Email
+                //    }));
+                //}
 
                 return new PagedResult<ParticipantResponse>
                 {
@@ -54,7 +56,7 @@ namespace Application.CQRS.Queries.ParticipantQuery
                     PageSize = result.PageSize,
                     PageCount = result.PageCount,
                     RowCount = result.RowCount,
-                    Items = items
+                    Items = _mapper.Map<IList<ParticipantResponse>>(result.Items)
                 };
             }
         }

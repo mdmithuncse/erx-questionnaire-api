@@ -18,10 +18,12 @@ namespace Application.CQRS.Queries.ParticipantAnswerQuery
         public class GetAllParticipantAnswerQueryHandler : IRequestHandler<GetAllParticipantAnswerQuery, PagedResult<ParticipantAnswerResponse>>
         {
             private readonly IAppDbContext _context;
+            private readonly IMapper _mapper;
 
-            public GetAllParticipantAnswerQueryHandler(IAppDbContext context)
+            public GetAllParticipantAnswerQueryHandler(IAppDbContext context, IMapper mapper)
             {
                 _context = context;
+                _mapper = mapper;
             }
 
             public async Task<PagedResult<ParticipantAnswerResponse>> Handle(GetAllParticipantAnswerQuery query, CancellationToken cancellationToken)
@@ -33,50 +35,50 @@ namespace Application.CQRS.Queries.ParticipantAnswerQuery
                     return default;
                 }
 
-                var items = new List<ParticipantAnswerResponse>();
+                //var items = new List<ParticipantAnswerResponse>();
 
-                if (result.Items.Any())
-                {
-                    result.Items.ToList().ForEach(x => items.Add(new ParticipantAnswerResponse
-                    {
-                        Id = x.Id,
-                        Created = x.Created,
-                        Updated = x.Updated,
-                        QuestionId = x.QuestionId,
-                        Question = new QuestionResponse 
-                        { 
-                            Id = x.Question.Id,
-                            Created = x.Question.Created,
-                            Updated = x.Question.Updated,
-                            Quiz = x.Question.Quiz,
-                            QuestionGroupId = x.Question.QuestionGroupId,
-                            QuestionGroup = new QuestionGroupResponse
-                            {
-                                Id = x.Question.QuestionGroup.Id,
-                                Created = x.Question.QuestionGroup.Created,
-                                Updated = x.Question.QuestionGroup.Updated,
-                                Name = x.Question.QuestionGroup.Name
-                            }
-                        },
-                        AnswerId = x.AnswerId,
-                        Answer = new AnswerResponse
-                        {
-                            Id = x.Answer.Id,
-                            Created = x.Answer.Created,
-                            Updated = x.Answer.Updated,
-                            Result = x.Answer.Result
-                        },
-                        ParticipantId = x.ParticipantId,
-                        Participant = new ParticipantResponse
-                        {
-                            Id = x.Participant.Id,
-                            Created = x.Participant.Created,
-                            Updated = x.Participant.Updated,
-                            Name = x.Participant.Name,
-                            Email = x.Participant.Email
-                        }
-                    }));
-                }
+                //if (result.Items.Any())
+                //{
+                //    result.Items.ToList().ForEach(x => items.Add(new ParticipantAnswerResponse
+                //    {
+                //        Id = x.Id,
+                //        Created = x.Created,
+                //        Updated = x.Updated,
+                //        QuestionId = x.QuestionId,
+                //        Question = new QuestionResponse 
+                //        { 
+                //            Id = x.Question.Id,
+                //            Created = x.Question.Created,
+                //            Updated = x.Question.Updated,
+                //            Quiz = x.Question.Quiz,
+                //            QuestionGroupId = x.Question.QuestionGroupId,
+                //            QuestionGroup = new QuestionGroupResponse
+                //            {
+                //                Id = x.Question.QuestionGroup.Id,
+                //                Created = x.Question.QuestionGroup.Created,
+                //                Updated = x.Question.QuestionGroup.Updated,
+                //                Name = x.Question.QuestionGroup.Name
+                //            }
+                //        },
+                //        AnswerId = x.AnswerId,
+                //        Answer = new AnswerResponse
+                //        {
+                //            Id = x.Answer.Id,
+                //            Created = x.Answer.Created,
+                //            Updated = x.Answer.Updated,
+                //            Result = x.Answer.Result
+                //        },
+                //        ParticipantId = x.ParticipantId,
+                //        Participant = new ParticipantResponse
+                //        {
+                //            Id = x.Participant.Id,
+                //            Created = x.Participant.Created,
+                //            Updated = x.Participant.Updated,
+                //            Name = x.Participant.Name,
+                //            Email = x.Participant.Email
+                //        }
+                //    }));
+                //}
 
                 return new PagedResult<ParticipantAnswerResponse>
                 {
@@ -84,7 +86,7 @@ namespace Application.CQRS.Queries.ParticipantAnswerQuery
                     PageSize = result.PageSize,
                     PageCount = result.PageCount,
                     RowCount = result.RowCount,
-                    Items = items
+                    Items = _mapper.Map<IList<ParticipantAnswerResponse>>(result.Items)
                 };
             }
         }

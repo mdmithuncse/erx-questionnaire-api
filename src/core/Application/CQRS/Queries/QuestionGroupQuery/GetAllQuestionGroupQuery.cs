@@ -19,10 +19,12 @@ namespace Application.CQRS.Queries.QuestionGroupQuery
         public class GetAllQuestionGroupQueryHandler : IRequestHandler<GetAllQuestionGroupQuery, PagedResult<QuestionGroupResponse>>
         {
             private readonly IAppDbContext _context;
+            private readonly IMapper _mapper;
 
-            public GetAllQuestionGroupQueryHandler(IAppDbContext context)
+            public GetAllQuestionGroupQueryHandler(IAppDbContext context, IMapper mapper)
             {
                 _context = context;
+                _mapper = mapper;
             }
 
             public async Task<PagedResult<QuestionGroupResponse>> Handle(GetAllQuestionGroupQuery query, CancellationToken cancellationToken)
@@ -34,18 +36,18 @@ namespace Application.CQRS.Queries.QuestionGroupQuery
                     return default;
                 }
 
-                var items = new List<QuestionGroupResponse>();
+                //var items = new List<QuestionGroupResponse>();
 
-                if (result.Items.Any())
-                {
-                    result.Items.ToList().ForEach(x => items.Add(new QuestionGroupResponse
-                    {
-                        Id = x.Id,
-                        Created = x.Created,
-                        Updated = x.Updated,
-                        Name = x.Name
-                    }));
-                }
+                //if (result.Items.Any())
+                //{
+                //    result.Items.ToList().ForEach(x => items.Add(new QuestionGroupResponse
+                //    {
+                //        Id = x.Id,
+                //        Created = x.Created,
+                //        Updated = x.Updated,
+                //        Name = x.Name
+                //    }));
+                //}
 
                 return new PagedResult<QuestionGroupResponse>
                 {
@@ -53,7 +55,7 @@ namespace Application.CQRS.Queries.QuestionGroupQuery
                     PageSize = result.PageSize,
                     PageCount = result.PageCount,
                     RowCount = result.RowCount,
-                    Items = items
+                    Items = _mapper.Map<IList<QuestionGroupResponse>>(result.Items)
                 };
             }
         }

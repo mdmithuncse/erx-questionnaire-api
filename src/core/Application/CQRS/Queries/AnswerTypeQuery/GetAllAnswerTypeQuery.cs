@@ -18,10 +18,12 @@ namespace Application.CQRS.Queries.AnswerTypeQuery
         public class GetAllAnswerTypeQueryHandler : IRequestHandler<GetAllAnswerTypeQuery, PagedResult<AnswerTypeResponse>>
         {
             private readonly IAppDbContext _context;
+            private readonly IMapper _mapper;
 
-            public GetAllAnswerTypeQueryHandler(IAppDbContext context)
+            public GetAllAnswerTypeQueryHandler(IAppDbContext context, IMapper mapper)
             {
                 _context = context;
+                _mapper = mapper;
             }
 
             public async Task<PagedResult<AnswerTypeResponse>> Handle(GetAllAnswerTypeQuery query, CancellationToken cancellationToken)
@@ -33,18 +35,18 @@ namespace Application.CQRS.Queries.AnswerTypeQuery
                     return default;
                 }
 
-                var items = new List<AnswerTypeResponse>();
+                //var items = new List<AnswerTypeResponse>();
                 
-                if (result.Items.Any())
-                {
-                    result.Items.ToList().ForEach(x => items.Add(new AnswerTypeResponse 
-                    { 
-                        Id = x.Id,
-                        Created = x.Created,
-                        Updated = x.Updated,
-                        Type = x.Type
-                    })); 
-                }
+                //if (result.Items.Any())
+                //{
+                //    result.Items.ToList().ForEach(x => items.Add(new AnswerTypeResponse 
+                //    { 
+                //        Id = x.Id,
+                //        Created = x.Created,
+                //        Updated = x.Updated,
+                //        Type = x.Type
+                //    })); 
+                //}
 
                 return new PagedResult<AnswerTypeResponse>
                 {
@@ -52,7 +54,7 @@ namespace Application.CQRS.Queries.AnswerTypeQuery
                     PageSize = result.PageSize,
                     PageCount = result.PageCount,
                     RowCount = result.RowCount,
-                    Items = items
+                    Items = _mapper.Map<IList<AnswerTypeResponse>>(result.Items)
                 };
             }
         }
