@@ -2,7 +2,7 @@
 
 ## Description ##
 
-Technical Assignment for ERX
+This is a sample project using Mediator and CQRS pattern
 
 ## Configuration and Installation ##
 
